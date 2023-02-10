@@ -4,7 +4,7 @@ from tkinter import filedialog
 from tkinter.messagebox import showerror
 from models import Contacts
 import file_operations
-#import crud
+
 contacts = Contacts()
 data=contacts.get('people')
 #обновление списка из переменной
@@ -18,8 +18,7 @@ def update_tree(tree,people):
 def import_file(tree):
     file = filedialog.askopenfilename(filetypes = [("csv files","*.csv")])
     people = file_operations.reading_csv(file)
-    #file_operations.write_csv(path,people)
-    contacts.insert_persons(path,people)
+    contacts.insert_persons(people)
     data = contacts.get('people')
     update_tree(tree,data)
 
@@ -38,8 +37,6 @@ def delete(tree):
     if tree.selection():
         selected_item = tree.selection()[0] ## get selected item
         values = tree.item(selected_item, option="values")
-        #crud.delete_record(values,people)
-        #file_operations.write_csv(path,people)
         contacts.delete('people',values[0])
         tree.delete(selected_item)
     else:
@@ -92,8 +89,6 @@ def edit(tree):
     
     def confirm_entry(tree, selected_item, entry1, entry2, entry3,entry4,entry5):
         tree.item(selected_item, values = (edit_index,entry1, entry2, entry3,entry4,entry5))
-        #crud.update_record(edit_index, (entry1, entry2, entry3,entry4,entry5),people)
-        #file_operations.write_csv(path,people)
         contacts.update_person((entry1, entry2, entry3,entry4,entry5),edit_index)
         return True
 
@@ -151,8 +146,6 @@ def add(tree):
     def ConfirmEntry(tree, entry1, entry2, entry3,entry4,entry5):
         if entry1 != '' or entry2 != '' or entry3 != '' or entry4 != '' or entry5 != '':
             values = (entry1, entry2, entry3, entry4, entry5)
-            #crud.create_record(values,people)
-            #file_operations.write_csv(path,people)
             contacts.insert_person(values)
             data = contacts.get('people')
             update_tree(tree,data)
